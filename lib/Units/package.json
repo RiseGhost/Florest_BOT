@@ -1,0 +1,14 @@
+{
+  "name": "units",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build":    "node-gyp configure build",
+    "clean":    "node-gyp clean",
+    "rebuild":  "node-gyp rebuild"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
