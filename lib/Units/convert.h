@@ -1,15 +1,16 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 
 int indexUnits(char* units){
-	if (units[0] == 'k' && units[1] == 'm') 		return 0;
-	else if (units[0] == 'h' && units[1] == 'm') 	return 1;
-	else if (units[0] == 'd' && units[1] == 'a')	return 2;
-	else if (units[0] == 'd' && units[1] == 'm') 	return 4;
-	else if (units[0] == 'c' && units[1] == 'm')	return 5;
-	else if (units[0] == 'm' && units[1] == 'm')	return 6;
-	else if (units[0] == 'm')						return 3;
-	else return 0;
+	if (strcmp("km",units)) 		return 0;
+	else if (strcmp("hm",units)) 	return 1;
+	else if (strcmp("dam",units))	return 2;
+	else if (strcmp("m",units))		return 3;
+	else if (strcmp("dm",units)) 	return 4;
+	else if (strcmp("cm",units))	return 5;
+	else if (strcmp("mm",units))	return 6;
+	return 0;
 }
 
 double convert(char* x,char* y,double value){

@@ -10,25 +10,10 @@ const client = new Client(
         ]
     });
 
-function NumeresLastIndex(message){
-    var index = 0;
-    for (var i = 0; i < message.length; i++){
-        if (isNaN(message[i]) && message[i] != '.') return i - 1
-    }
-    return index
-}
-
-function Validate(message){
-    var msg = message.content.replace(/\s/g,"")
-    var number = parseFloat(msg.substring(0,NumeresLastIndex(msg)+1))
-    var compoments = msg.substring(NumeresLastIndex(msg)+1).split('to')
-    if (number != NaN && compoments.length > 1) message.reply(Convert.c(compoments[0],compoments[1],number).toString())
-    else                                        return false
-}
-
-client.on('messageCreate',async function (message){
-    if (message.content.substring(0,4) == "tree")   message.reply(Tree.StrToTree(message.content))
-    Validate(message)
+client.on('messageCreate', async function (message) {
+    if (message.author.bot) return
+    if (message.content.substring(0, 4) == "tree") message.reply(Tree.StrToTree(message.content))
+    Convert.converter(message)
 })
 
 /*
