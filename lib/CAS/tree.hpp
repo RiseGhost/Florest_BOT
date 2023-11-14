@@ -18,11 +18,8 @@ class Tree{
         Tree* Rigth = nullptr;
         Tree* Left = nullptr;
         Tree(const char* exp){
-            short len = strlen(exp);
-            this->exp = (char*) malloc(sizeof(char) * (len + 1));
-            strcpy(this->exp,exp);
-            this->exp[len + 1] = '\0';
-            if (isNumer(this->exp,strlen(this->exp)) == false) this->ExpandTree(len);
+            this->CopyString(exp,strlen(exp));
+            if (isNumer(this->exp,strlen(this->exp)) == false) this->ExpandTree(strlen(exp));
         }
 
         short height(){
@@ -98,10 +95,14 @@ class Tree{
 
         //Atualizada o valor da string do nodo:
         void refreshValue(char* exp,short STRlen){
+            this->CopyString(exp,STRlen);
+            this->clean();
+        }
+
+        void CopyString(const char* exp, short STRlen){
             this->exp = (char*) malloc(sizeof(char) * (STRlen + 1));
             strcpy(this->exp,exp);
             this->exp[STRlen] = '\0';
-            this->clean();
         }
 
         void ExpandTree(short STRlen){
@@ -112,15 +113,11 @@ class Tree{
             }
             const char* Func = MathFunc(str,STRlen);
             if (Func != " "){
-                this->exp = (char*) malloc(sizeof(char) * strlen(Func) + 1);
-                strcpy(this->exp,Func);
-                this->exp[strlen(Func)] = '\0';
+                this->CopyString(Func,strlen(Func));
                 this->Left = new Tree(StringAt(&str[strlen(Func)+1],STRlen-strlen(Func)-2));
             }   else{
                 short index = OperationIndex(str,STRlen,0);
-                this->exp = (char*) malloc(sizeof(char) * 2);
-                strcpy(this->exp,CharToString(str[index]));
-                this->exp[1] = '\0';
+                this->CopyString(CharToString(str[index]),1);
                 if (str[index] != '!') this->Rigth = new Tree(&str[index+1]);
                 this->Left = new Tree(StringAt(str,index));
             }

@@ -17,6 +17,7 @@ napi_value CalculatExpression(napi_env env, napi_callback_info info){
     napi_get_value_string_utf8(env,expression,NULL,0,&expressionLength);
     char exp[expressionLength+1];
     napi_get_value_string_utf8(env,expression,exp,sizeof(exp),NULL);
+    if (VectorIndexOf(ParenticesIndex(exp,strlen(exp)),-1) != -1) return CreateNapiString(env,"❎\nSorry.\nError to read expression.\nInvalid parentheses.");
     Tree acacia = Tree(exp);
     short h = acacia.height();
     for (short i = 0; i <= h; i++){
