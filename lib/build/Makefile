@@ -344,7 +344,7 @@ endif
 
 quiet_cmd_regen_makefile = ACTION Regenerating $@
 cmd_regen_makefile = cd $(srcdir); /usr/local/lib/node_modules/node-gyp/gyp/gyp_main.py -fmake --ignore-environment "-Dlibrary=shared_library" "-Dvisibility=default" "-Dnode_root_dir=/home/theo-pi/.cache/node-gyp/18.13.0" "-Dnode_gyp_dir=/usr/local/lib/node_modules/node-gyp" "-Dnode_lib_file=/home/theo-pi/.cache/node-gyp/18.13.0/<(target_arch)/node.lib" "-Dmodule_root_dir=/home/theo-pi/Documents/Florest_BOT/lib" "-Dnode_engine=v8" "--depth=." "-Goutput_dir=." "--generator-output=build" -I/home/theo-pi/Documents/Florest_BOT/lib/build/config.gypi -I/usr/local/lib/node_modules/node-gyp/addon.gypi -I/home/theo-pi/.cache/node-gyp/18.13.0/include/node/common.gypi "--toplevel-dir=." binding.gyp
-Makefile: $(srcdir)/binding.gyp $(srcdir)/../../../.cache/node-gyp/18.13.0/include/node/common.gypi $(srcdir)/build/config.gypi $(srcdir)/../../../../../usr/local/lib/node_modules/node-gyp/addon.gypi
+Makefile: $(srcdir)/binding.gyp $(srcdir)/../../../../../usr/local/lib/node_modules/node-gyp/addon.gypi $(srcdir)/build/config.gypi $(srcdir)/../../../.cache/node-gyp/18.13.0/include/node/common.gypi
 	$(call do_cmd,regen_makefile)
 
 # "all" is a concatenation of the "all" targets from all the included

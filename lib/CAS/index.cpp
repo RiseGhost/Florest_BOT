@@ -19,7 +19,7 @@ napi_value CalculatExpression(napi_env env, napi_callback_info info){
     napi_get_value_string_utf8(env,expression,exp,sizeof(exp),NULL);
     Tree acacia = Tree(exp);
     short h = acacia.height();
-    for (int i = 0; i <= h; i++){
+    for (short i = 0; i <= h; i++){
         acacia.resolver();
     }
     acacia.resolver();

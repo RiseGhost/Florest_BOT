@@ -1,5 +1,6 @@
 const Tree = require('./tree/tree')
-const Convert = require('./lib/index')
+const Lib = require('./lib/index')
+const {fork} = require('child_process')
 const { Client, GatewayIntentBits } = require('discord.js');
 const client = new Client(
     {
@@ -10,11 +11,18 @@ const client = new Client(
         ]
     });
 
+const Pcas = fork('./lib/cas.js')
+const Pconverter = fork('./lib/convert.js')
+
 client.on('messageCreate', async function (message) {
     if (message.author.bot) return
     if (message.content.substring(0, 4) == "tree") message.reply(Tree.StrToTree(message.content))
-    Convert.converter(message)
-    Convert.cas(message)
+    
+    Pconverter.send(message.content)
+    Pconverter.once('message',(data)=>{if (data != "") message.reply(data)})
+
+    Pcas.send(message.content)
+    Pcas.once('message',(data)=>{if (data != "") message.reply(data)})
 })
 
 /*
