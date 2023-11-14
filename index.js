@@ -14,6 +14,7 @@ client.on('messageCreate', async function (message) {
     if (message.author.bot) return
     if (message.content.substring(0, 4) == "tree") message.reply(Tree.StrToTree(message.content))
     Convert.converter(message)
+    Convert.cas(message)
 })
 
 /*

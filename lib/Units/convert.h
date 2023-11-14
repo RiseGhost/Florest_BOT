@@ -70,7 +70,6 @@ double ConvertTime(char* unit1,char* unit2,double value){
 }
 
 char* convert(char* unit1,char* unit2,double value){
-	printf("%s %s %f\n", unit1,unit2,value);
     if (SameUnitsType(unit1,unit2) == false)    return "Invalid convert";
 	double v = 0;
 	if (SameUnitsType(unit1,unit1) == Dist)         v = ConvertDist(unit1,unit2,value);
