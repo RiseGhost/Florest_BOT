@@ -20,6 +20,7 @@ char Sinal(const char s1, const char s2){
 }
 
 int isNumer(const char* number, short strlen){
+    if (strlen == 0)        return false;
     if (number[0] == '-')   return isNumer(&number[1],strlen-1);
     for (short index = 0; index < strlen; index++){
         if ((number[index] < '0' || number[index] > '9') && (number[index] != '.'))   return false;
