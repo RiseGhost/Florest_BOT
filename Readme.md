@@ -9,7 +9,7 @@ https://discord.com/api/oauth2/authorize?client_id=1167856337166811226&permissio
 - ## CAS (Computer Algebric System): 🧮
     - Implementação de um calculadora gráfica diretamente no chat do discord.
 - ## Representação de árvores binárias: 🌳
-    - Capacidade de fazer uma representação da aparencia de uma árvore binária.
+    - Capacidade de fazer uma representação da aparência de uma árvore binária.
 - ## Conversor de únidades: 🧊
     - Capaz de fazer simples conversões de unidades, exemplo:
         - distância (km,...,m,...,mm)
