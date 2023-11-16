@@ -47,3 +47,7 @@ const string Tan(const string v){
 const string Pow(const string base, const string expoent){
     return CreateNumber(pow(atof(base),atof(expoent)));
 }
+
+const string fatorial(const string v){
+    return CreateNumber(Fatorial(atof(v)));
+}

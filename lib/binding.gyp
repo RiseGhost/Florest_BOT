@@ -6,7 +6,8 @@
 		},
 		{
 			"target_name": "CAS",
-			"sources": ["./CAS/index.cpp"]
+			"sources": ["./CAS/index.cpp"],
+            "cflags_cc": ["-fexceptions"],
 		}
 	]
 }

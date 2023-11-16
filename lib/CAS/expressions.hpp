@@ -3,8 +3,6 @@
 #include<string.h>
 #include<vector>
 #include<iostream>
-#define true 1
-#define false 0
 
 const char operations[6] = {'+','-','*','/','^','!'};
 const char* MFuncs[10] = {"sen","sin","cos","tan","arcsen","arcsin","arcos","arctan","||","ln"};
@@ -19,7 +17,7 @@ char Sinal(const char s1, const char s2){
     else                                return '!';
 }
 
-int isNumer(const char* number, short strlen){
+bool isNumer(const char* number, short strlen){
     if (strlen == 0)        return false;
     if (number[0] == '-')   return isNumer(&number[1],strlen-1);
     for (short index = 0; index < strlen; index++){
@@ -50,6 +48,13 @@ int VectorIndexOf(std::vector<short> vec, short element){
     return -1;
 }
 
+int VectorContinue(std::vector<short> vec){
+    for (short index = 0; index < vec.size() - 1; index++ ){
+        if (vec[index] + 1 != vec[index+1]) return false;
+    }
+    return true;
+}
+
 //In case of error push -1 in vector
 std::vector<short> ParenticesIndex(const char* exp, short strlen){
     std::vector<short> indexs;
@@ -68,7 +73,7 @@ const char* MathFunc(const char* exp, short STRlen){
     std::vector<short> Parentices = ParenticesIndex(exp, STRlen);
     if (STRlen < 4) return " ";
     else{
-        if (Parentices.size() > 0 && Parentices[Parentices.size()-1] == STRlen - 2){
+        if (Parentices.size() > 0 && Parentices[Parentices.size()-1] == STRlen - 2 && VectorContinue(Parentices) == true){
             const char* part1 = StringAt(exp,Parentices[0]-1);
             for (short index = 0; index < 10; index++){
                 if (strcmp(part1,MFuncs[index]) == 0)   return MFuncs[index];
@@ -82,8 +87,8 @@ const char* MathFunc(const char* exp, short STRlen){
 short OperationIndex(const char* exp, short STRlen, short delta){
     std::vector<short> ParenticesInternal = ParenticesIndex(exp,STRlen);
     char sinal = ' ';
-    short i = 0;
-    for(short index = STRlen; index >= 0; index--){
+    short i = -1;
+    for(short index = STRlen; index >= 1; index--){
         if (VectorIndexOf(ParenticesInternal,index) == -1){
             if (FindONArray(exp[index],operations,6)){
                 if (sinal == ' '){

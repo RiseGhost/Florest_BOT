@@ -47,6 +47,9 @@ class Tree{
                 } else if (strcmp(this->exp,"tan") == 0){
                     const string result = Tan(this->Left->exp);
                     this->refreshValue(result,strlen(result));
+                } else if (strcmp(this->exp,"!") == 0){
+                    const string result = fatorial(this->Left->exp);
+                    this->refreshValue(result,strlen(result));
                 }
             } else if (this->isLeft() == 0 && isNumer(this->Left->exp,strlen(this->Left->exp)) && isNumer(this->Rigth->exp,strlen(this->Rigth->exp))){
                 if (strcmp(this->exp,"+") == 0){
@@ -71,6 +74,17 @@ class Tree{
             }
         }
 
+        //Return true if tree is valid, false otherwise
+        bool validated(){
+            if (strcmp(this->exp,"!") == 0){
+                if (atof(this->Left->exp) < 0)  return false;
+            }
+            if (this->Rigth != nullptr && this->Left != nullptr) return this->Rigth->validated() && this->Left->validated();
+            else if (this->Rigth != nullptr) return this->Rigth->validated();
+            else if (this->Left != nullptr) return this->Left->validated();
+            else return true;
+        }
+
     private:
         void printCurrentNode(short Heigth){
             if (Heigth == 0)
@@ -81,8 +95,8 @@ class Tree{
             }
         }
 
-        int isLeft(){
-            return (this->Rigth == nullptr && this->Left == nullptr) ? 1 : 0;
+        bool isLeft(){
+            return (this->Rigth == nullptr && this->Left == nullptr) ? true : false;
         }
 
         //Limpa toda a memória utilizada pelos nodos filhos:
@@ -105,19 +119,35 @@ class Tree{
             this->exp[STRlen] = '\0';
         }
 
+        //Return true if the node exp = +,-,/,*:
+        bool isMathSinal(){
+            if (this == nullptr)                    return false;
+            else if (strcmp(this->exp,"+") == 0)    return true;
+            else if (strcmp(this->exp,"-") == 0)    return true;
+            else if (strcmp(this->exp,"*") == 0)    return true;
+            else if (strcmp(this->exp,"/") == 0)    return true;
+            else                                    return false;
+        }
+
         void ExpandTree(short STRlen){
             char* str = this->exp;
-            while (ParenticesIndex(str,STRlen).size() == STRlen - 2){
+            std::vector<short> P = ParenticesIndex(str,STRlen);
+            while (P.size() == STRlen - 2 && P.size() != 0){
                 str = StringAt(&str[1],STRlen-2);
                 STRlen = strlen(str);
             }
             const char* Func = MathFunc(str,STRlen);
+            if (isNumer(str,STRlen)){
+                this->exp = str;
+                return;
+            }
             if (Func != " "){
                 this->CopyString(Func,strlen(Func));
                 this->Left = new Tree(StringAt(&str[strlen(Func)+1],STRlen-strlen(Func)-2));
             }   else{
                 short index = OperationIndex(str,STRlen,0);
                 this->CopyString(CharToString(str[index]),1);
+                if (index < 0) throw std::runtime_error("❎\nSorry.\nOperacion Invalid posicion.");
                 if (str[index] != '!') this->Rigth = new Tree(&str[index+1]);
                 this->Left = new Tree(StringAt(str,index));
             }

@@ -1,8 +1,9 @@
 #include<node_api.h>
 #include"tree.hpp"
 #include<string.h>
+#include<iostream>
 
-napi_value CreateNapiString(napi_env env,char* string){
+napi_value CreateNapiString(napi_env env,const char* string){
     napi_value v;
     napi_create_string_utf8(env,string,strlen(string),&v);
     return v;
@@ -18,13 +19,17 @@ napi_value CalculatExpression(napi_env env, napi_callback_info info){
     char exp[expressionLength+1];
     napi_get_value_string_utf8(env,expression,exp,sizeof(exp),NULL);
     if (VectorIndexOf(ParenticesIndex(exp,strlen(exp)),-1) != -1) return CreateNapiString(env,"❎\nSorry.\nError to read expression.\nInvalid parentheses.");
-    Tree acacia = Tree(exp);
-    short h = acacia.height();
-    for (short i = 0; i <= h; i++){
-        acacia.resolver();
+    try{
+        Tree acacia = Tree(exp);
+        if (!acacia.validated()) return CreateNapiString(env,"❎\nSorry.\nError to read expression.");
+        short h = acacia.height();
+        for (short i = 0; i <= h; i++){
+            acacia.resolver();
+        }
+        return CreateNapiString(env,acacia.exp);
+    } catch(std::runtime_error& e){
+        return CreateNapiString(env,e.what());
     }
-    acacia.resolver();
-	return CreateNapiString(env,acacia.exp);
 }     
 
 napi_value init(napi_env env, napi_value exports){

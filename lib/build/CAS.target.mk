@@ -36,7 +36,8 @@ CFLAGS_C_Debug :=
 CFLAGS_CC_Debug := \
 	-fno-rtti \
 	-fno-exceptions \
-	-std=gnu++17
+	-std=gnu++17 \
+	-fexceptions
 
 INCS_Debug := \
 	-I/home/theo-pi/.cache/node-gyp/18.13.0/include/node \
@@ -78,7 +79,8 @@ CFLAGS_C_Release :=
 CFLAGS_CC_Release := \
 	-fno-rtti \
 	-fno-exceptions \
-	-std=gnu++17
+	-std=gnu++17 \
+	-fexceptions
 
 INCS_Release := \
 	-I/home/theo-pi/.cache/node-gyp/18.13.0/include/node \

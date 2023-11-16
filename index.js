@@ -18,11 +18,14 @@ client.on('messageCreate', async function (message) {
     if (message.author.bot) return
     if (message.content.substring(0, 4) == "tree") message.reply(Tree.StrToTree(message.content))
     
-    Pconverter.send(message.content)
-    Pconverter.once('message',(data)=>{if (data != "") message.reply(data)})
-
-    Pcas.send(message.content)
-    Pcas.once('message',(data)=>{if (data != "") message.reply(data)})
+    try{
+        Pconverter.send(message.content)
+        Pconverter.once('message',(data)=>{if (data != "") message.reply(data)})
+    
+        Pcas.send(message.content)
+        Pcas.once('message',(data)=>{if (data != "") message.reply(data)})
+    } catch{}
+   
 })
 
 /*
