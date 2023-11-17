@@ -1,5 +1,5 @@
 const Tree = require('./tree/tree')
-const Lib = require('./lib/index')
+const json = require('./data.json')
 const {fork} = require('child_process')
 const { Client, GatewayIntentBits } = require('discord.js');
 const client = new Client(
@@ -34,5 +34,5 @@ sudo systemctl start floarest-service.service
 ☁  Florest BOT  sudo systemctl enable floarest-service.service
 */
 
-client.login("");
+client.login(json['bot'].Token);
 console.log("Server ON")
