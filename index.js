@@ -34,5 +34,5 @@ sudo systemctl start floarest-service.service
 ☁  Florest BOT  sudo systemctl enable floarest-service.service
 */
 
-client.login("MTE2Nzg1NjMzNzE2NjgxMTIyNg.GLFXDG.JHRQEnBkSk4kW8F5uVtLr2D6_96-pQtAfYOuXY");
+client.login("");
 console.log("Server ON")
