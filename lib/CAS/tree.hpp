@@ -22,6 +22,12 @@ class Tree{
             if (isNumer(this->exp,strlen(this->exp)) == false) this->ExpandTree(strlen(exp));
         }
 
+        //Aredonda o valor do nodo atual a 5 casas decimais:
+        void RoundValer(){
+            double roundv = roundf(atof(this->exp)*100000)/100000;
+            this->exp = CreateNumber(roundv);
+        }
+
         short height(){
             if (this->isLeft() == true || this == NULL) return 0;
             else if (this->Rigth == nullptr)            return 1 + max(0,this->Left->height());

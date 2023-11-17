@@ -26,6 +26,7 @@ napi_value CalculatExpression(napi_env env, napi_callback_info info){
         for (short i = 0; i <= h; i++){
             acacia.resolver();
         }
+        acacia.RoundValer();
         return CreateNapiString(env,acacia.exp);
     } catch(std::runtime_error& e){
         return CreateNapiString(env,e.what());
