@@ -44,36 +44,31 @@ class Tree{
 
         void resolver(){
             if (this->Left != nullptr && isNumer(this->Left->exp,strlen(this->Left->exp)) && this->Rigth == nullptr){
-                if (strcmp(this->exp,"sin") == 0 || strcmp(this->exp,"sen") == 0){
-                    const string result = Sen(this->Left->exp);
-                    this->refreshValue(result,strlen(result));
-                } else if (strcmp(this->exp,"cos") == 0){
-                    const string result = Cos(this->Left->exp);
-                    this->refreshValue(result,strlen(result));
-                } else if (strcmp(this->exp,"tan") == 0){
-                    const string result = Tan(this->Left->exp);
-                    this->refreshValue(result,strlen(result));
-                } else if (strcmp(this->exp,"!") == 0){
-                    const string result = fatorial(this->Left->exp);
-                    this->refreshValue(result,strlen(result));
-                }
+                string result;
+                if (strcmp(this->exp,"sin") == 0 || strcmp(this->exp,"sen") == 0)
+                    result = Sen(this->Left->exp);
+                else if (strcmp(this->exp,"cos") == 0)
+                    result = Cos(this->Left->exp);
+                else if (strcmp(this->exp,"tan") == 0)
+                    result = Tan(this->Left->exp);
+                else if (strcmp(this->exp,"!") == 0)
+                    result = fatorial(this->Left->exp);
+                else if (strcmp(this->exp,"|") == 0)
+                    result = Modulo(this->Left->exp);
+                this->refreshValue(result,strlen(result));
             } else if (this->isLeft() == 0 && isNumer(this->Left->exp,strlen(this->Left->exp)) && isNumer(this->Rigth->exp,strlen(this->Rigth->exp))){
-                if (strcmp(this->exp,"+") == 0){
-                    const string result = Add(this->Left->exp,this->Rigth->exp);
-                    this->refreshValue(result,strlen(result));
-                } else if (strcmp(this->exp,"-") == 0){
-                    const string result = Sub(this->Left->exp,this->Rigth->exp);
-                    this->refreshValue(result,strlen(result));
-                } else if (strcmp(this->exp,"*") == 0){
-                    const string result = Multi(this->Left->exp,this->Rigth->exp);
-                    this->refreshValue(result,strlen(result));
-                } else if (strcmp(this->exp,"/") == 0){
-                    const string result = Div(this->Left->exp,this->Rigth->exp);
-                    this->refreshValue(result,strlen(result));
-                } else if (strcmp(this->exp,"^") == 0){
-                    const string result = Pow(this->Left->exp,this->Rigth->exp);
-                    this->refreshValue(result,strlen(result));
-                }
+                string result;
+                if (strcmp(this->exp,"+") == 0)
+                    result = Add(this->Left->exp,this->Rigth->exp);
+                else if (strcmp(this->exp,"-") == 0)
+                    result = Sub(this->Left->exp,this->Rigth->exp);
+                else if (strcmp(this->exp,"*") == 0)
+                    result = Multi(this->Left->exp,this->Rigth->exp);
+                else if (strcmp(this->exp,"/") == 0)
+                    result = Div(this->Left->exp,this->Rigth->exp);
+                else if (strcmp(this->exp,"^") == 0)
+                    result = Pow(this->Left->exp,this->Rigth->exp);
+                this->refreshValue(result,strlen(result));
             } else{
                 if (this->Rigth != nullptr) this->Rigth->resolver();
                 if (this->Left != nullptr) this->Left->resolver();
@@ -149,7 +144,8 @@ class Tree{
             }
             if (Func != " "){
                 this->CopyString(Func,strlen(Func));
-                this->Left = new Tree(StringAt(&str[strlen(Func)+1],STRlen-strlen(Func)-2));
+                if (strcmp(Func,"|") == 0) this->Left = new Tree(StringAt(&str[1],STRlen-2));
+                else this->Left = new Tree(StringAt(&str[strlen(Func)+1],STRlen-strlen(Func)-2));
             }   else{
                 short index = OperationIndex(str,STRlen,0);
                 this->CopyString(CharToString(str[index]),1);

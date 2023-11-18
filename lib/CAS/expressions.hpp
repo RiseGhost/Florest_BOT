@@ -71,6 +71,7 @@ std::vector<short> ParenticesIndex(const char* exp, short strlen){
 
 const char* MathFunc(const char* exp, short STRlen){
     std::vector<short> Parentices = ParenticesIndex(exp, STRlen);
+    if (exp[0] == '|' && exp[STRlen-1] == '|')    return "|";
     if (STRlen < 4) return " ";
     else{
         if (Parentices.size() > 0 && Parentices[Parentices.size()-1] == STRlen - 2 && VectorContinue(Parentices) == true){
@@ -79,8 +80,7 @@ const char* MathFunc(const char* exp, short STRlen){
                 if (strcmp(part1,MFuncs[index]) == 0)   return MFuncs[index];
             }
             return " ";
-        } if (exp[0] == '|' && exp[STRlen-1] == '|')    return "||";
-        else      return " ";
+        } else      return " ";
     }
 }
 

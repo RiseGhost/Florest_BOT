@@ -51,3 +51,7 @@ const string Pow(const string base, const string expoent){
 const string fatorial(const string v){
     return CreateNumber(Fatorial(atof(v)));
 }
+
+const string Modulo(const string v){
+    return (atof(v) >= 0) ? CreateNumber(atof(v)) : CreateNumber(-atof(v));
+}
