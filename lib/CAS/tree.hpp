@@ -29,7 +29,7 @@ class Tree{
         }
 
         short height(){
-            if (this->isLeft() == true || this == NULL) return 0;
+            if (this->isLeft() == true)                 return 0;
             else if (this->Rigth == nullptr)            return 1 + max(0,this->Left->height());
             else if (this->Left == nullptr)             return 1 + max(this->Rigth->height(),0);
             else                                        return 1 + max(this->Rigth->height(),this->Left->height());
@@ -61,7 +61,8 @@ class Tree{
                 if (strcmp(this->exp,"+") == 0)
                     result = Add(this->Left->exp,this->Rigth->exp);
                 else if (strcmp(this->exp,"-") == 0)
-                    result = Sub(this->Left->exp,this->Rigth->exp);
+                    if (this->Rigth != nullptr) result = Sub(this->Left->exp,this->Rigth->exp);
+                    else result = CreateNumber(- atof(this->Left->exp));
                 else if (strcmp(this->exp,"*") == 0)
                     result = Multi(this->Left->exp,this->Rigth->exp);
                 else if (strcmp(this->exp,"/") == 0)
@@ -73,17 +74,6 @@ class Tree{
                 if (this->Rigth != nullptr) this->Rigth->resolver();
                 if (this->Left != nullptr) this->Left->resolver();
             }
-        }
-
-        //Return true if tree is valid, false otherwise
-        bool validated(){
-            if (strcmp(this->exp,"!") == 0){
-                if (atof(this->Left->exp) < 0)  return false;
-            }
-            if (this->Rigth != nullptr && this->Left != nullptr) return this->Rigth->validated() && this->Left->validated();
-            else if (this->Rigth != nullptr) return this->Rigth->validated();
-            else if (this->Left != nullptr) return this->Left->validated();
-            else return true;
         }
 
     private:
@@ -133,7 +123,7 @@ class Tree{
         void ExpandTree(short STRlen){
             char* str = this->exp;
             std::vector<short> P = ParenticesIndex(str,STRlen);
-            while (P.size() == STRlen - 2 && P.size() != 0){
+            while ((short) P.size() == STRlen - 2 && P.size() != 0){
                 str = StringAt(&str[1],STRlen-2);
                 STRlen = strlen(str);
             }
@@ -142,13 +132,14 @@ class Tree{
                 this->exp = str;
                 return;
             }
-            if (Func != " "){
+            if (strcmp(Func," ") != 0){
                 this->CopyString(Func,strlen(Func));
                 if (strcmp(Func,"|") == 0) this->Left = new Tree(StringAt(&str[1],STRlen-2));
                 else this->Left = new Tree(StringAt(&str[strlen(Func)+1],STRlen-strlen(Func)-2));
             }   else{
                 short index = OperationIndex(str,STRlen,0);
                 this->CopyString(CharToString(str[index]),1);
+                if (str[index] == '-') this->Left = new Tree(&str[1]);
                 if (index < 0) throw std::runtime_error("❎\nSorry.\nOperacion Invalid posicion.");
                 if (str[index] != '!') this->Rigth = new Tree(&str[index+1]);
                 this->Left = new Tree(StringAt(str,index));

@@ -21,7 +21,6 @@ napi_value CalculatExpression(napi_env env, napi_callback_info info){
     if (VectorIndexOf(ParenticesIndex(exp,strlen(exp)),-1) != -1) return CreateNapiString(env,"❎\nSorry.\nError to read expression.\nInvalid parentheses.");
     try{
         Tree acacia = Tree(exp);
-        if (!acacia.validated()) return CreateNapiString(env,"❎\nSorry.\nError to read expression.");
         short h = acacia.height();
         for (short i = 0; i <= h; i++){
             acacia.resolver();

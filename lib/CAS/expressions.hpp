@@ -42,14 +42,14 @@ int FindONArray(const char c, const char* array, short arraysize){
 }
 
 int VectorIndexOf(std::vector<short> vec, short element){
-    for (short index = 0; index < vec.size(); index++){
+    for (size_t index = 0; index < vec.size(); index++){
         if (vec[index] == element) return index;
     }
     return -1;
 }
 
 int VectorContinue(std::vector<short> vec){
-    for (short index = 0; index < vec.size() - 1; index++ ){
+    for (size_t index = 0; index < vec.size() - 1; index++ ){
         if (vec[index] + 1 != vec[index+1]) return false;
     }
     return true;
