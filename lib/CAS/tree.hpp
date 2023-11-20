@@ -139,7 +139,6 @@ class Tree{
             }   else{
                 short index = OperationIndex(str,STRlen,0);
                 this->CopyString(CharToString(str[index]),1);
-                if (str[index] == '-') this->Left = new Tree(&str[1]);
                 if (index < 0) throw std::runtime_error("❎\nSorry.\nOperacion Invalid posicion.");
                 if (str[index] != '!') this->Rigth = new Tree(&str[index+1]);
                 this->Left = new Tree(StringAt(str,index));

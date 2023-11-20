@@ -69,6 +69,16 @@ std::vector<short> ParenticesIndex(const char* exp, short strlen){
     return indexs;
 }
 
+std::vector<short> ModuloIndex(const char* exp, short strlen){
+    std::vector<short> indexs;
+    short mod = -1;
+    for (short i = 0; i < strlen; i++){
+        if (mod > 0) indexs.push_back(i);
+        if (exp[i] == '|') mod = mod * -1;
+    }
+    return indexs;
+}
+
 const char* MathFunc(const char* exp, short STRlen){
     std::vector<short> Parentices = ParenticesIndex(exp, STRlen);
     if (exp[0] == '|' && exp[STRlen-1] == '|')    return "|";
@@ -86,10 +96,11 @@ const char* MathFunc(const char* exp, short STRlen){
 
 short OperationIndex(const char* exp, short STRlen, short delta){
     std::vector<short> ParenticesInternal = ParenticesIndex(exp,STRlen);
+    std::vector<short> ModuloIndexs = ModuloIndex(exp,STRlen);
     char sinal = ' ';
     short i = -1;
     for(short index = STRlen; index >= 1; index--){
-        if (VectorIndexOf(ParenticesInternal,index) == -1){
+        if (VectorIndexOf(ParenticesInternal,index) == -1 && VectorIndexOf(ModuloIndexs,index) == -1){
             if (FindONArray(exp[index],operations,6)){
                 if (sinal == ' '){
                     sinal = exp[index];
