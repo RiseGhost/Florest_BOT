@@ -2,17 +2,67 @@ const Tree = require('./tree/tree')
 const json = require('./data.json')
 const {fork, exec} = require('child_process')
 const { Client, GatewayIntentBits } = require('discord.js');
+const VoiceConnect = require('./modules/VoiceConnect')
+const Music = require('./modules/Music')
+const Commands = require('./modules/Commands')
+const { createAudioPlayer } = require('@discordjs/voice');
 const client = new Client(
     {
         intents: [
             GatewayIntentBits.Guilds,
             GatewayIntentBits.GuildMessages,
             GatewayIntentBits.MessageContent,
+            GatewayIntentBits.GuildVoiceStates, //Talk voice
         ]
     });
 
 const Pcas = fork('./lib/cas.js')
 const Pconverter = fork('./lib/convert.js')
+
+client.on('ready',async () => {
+    console.log("Server ON")
+    Object.values(Commands).forEach(command => {
+        client.application.commands.create(command)
+    })
+})
+
+let servers = new Map()
+let players = new Map()
+
+async function Playing(interaction){
+    const { commandName, options } = interaction;
+    players.set(interaction.guildId,createAudioPlayer())
+    if (!interaction.member.voice.channel) return interaction.reply("Err ❌")
+    const connection = VoiceConnect.connect(interaction)
+    connection.subscribe(players.get(interaction.guildId))
+    const resource = await Music.getYouTubeResource(options.get('url').value)
+    if (resource != -1) players.get(interaction.guildId).play(resource)
+    else {
+        connection.destroy()
+        interaction.reply('Err URL ❌')
+        return
+    }
+    interaction.reply("Playing Music 🎵")
+}
+
+client.on('interactionCreate', async interaction => {
+    const { commandName, options } = interaction;
+    if (commandName === "play"){
+        if (servers.get(interaction.guildId) != undefined){
+            players.get(interaction.guildId).pause()
+            servers.set(interaction.guildId,Playing(interaction))
+        } else{
+            servers.set(interaction.guildId,Playing(interaction))
+        }
+    } else if (commandName === "stop"){
+        if (servers.get(interaction.guildId) != undefined){
+            players.get(interaction.guildId).pause()
+            servers.delete(interaction.guildId)
+            players.delete(interaction.guildId)
+            interaction.reply("Music stoped")
+        } else{interaction.reply("Not music playing")}
+    }
+})
 
 client.on('messageCreate', function (message) {
     if (message.author.bot) return
@@ -27,8 +77,8 @@ client.on('messageCreate', function (message) {
         })
     }
 
-    Pconverter.send(message.content)
-    Pconverter.once('message',(data)=>{if (data != "") message.reply(data)})
+    //Pconverter.send(message.content)
+    //Pconverter.once('message',(data)=>{if (data != "") message.reply(data)})
 
     Pcas.send(message)
     Pcas.once('message',(data)=>{if (data != "") message.reply(data)})
@@ -41,4 +91,5 @@ sudo systemctl start floarest-service.service
 */
 
 client.login(json['bot'].Token);
-console.log("Server ON")
+
+//https://discord.com/api/oauth2/authorize?client_id=1167856337166811226&permissions=35190851241984&scope=bot
