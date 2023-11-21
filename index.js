@@ -2,10 +2,8 @@ const Tree = require('./tree/tree')
 const json = require('./data.json')
 const {fork, exec} = require('child_process')
 const { Client, GatewayIntentBits } = require('discord.js');
-const VoiceConnect = require('./modules/VoiceConnect')
-const Music = require('./modules/Music')
 const Commands = require('./modules/Commands')
-const { createAudioPlayer } = require('@discordjs/voice');
+const { PlayingMusic } = require('./modules/MusicPlay')
 const client = new Client(
     {
         intents: [
@@ -26,41 +24,14 @@ client.on('ready',async () => {
     })
 })
 
-let servers = new Map()
-let players = new Map()
-
-async function Playing(interaction){
-    const { commandName, options } = interaction;
-    players.set(interaction.guildId,createAudioPlayer())
-    if (!interaction.member.voice.channel) return interaction.reply("Err ❌")
-    const connection = VoiceConnect.connect(interaction)
-    connection.subscribe(players.get(interaction.guildId))
-    const resource = await Music.getYouTubeResource(options.get('url').value)
-    if (resource != -1) players.get(interaction.guildId).play(resource)
-    else {
-        connection.destroy()
-        interaction.reply('Err URL ❌')
-        return
-    }
-    interaction.reply("Playing Music 🎵")
-}
+const Play = new PlayingMusic()
 
 client.on('interactionCreate', async interaction => {
-    const { commandName, options } = interaction;
+    const { commandName } = interaction;
     if (commandName === "play"){
-        if (servers.get(interaction.guildId) != undefined){
-            players.get(interaction.guildId).pause()
-            servers.set(interaction.guildId,Playing(interaction))
-        } else{
-            servers.set(interaction.guildId,Playing(interaction))
-        }
+        Play.play(interaction)
     } else if (commandName === "stop"){
-        if (servers.get(interaction.guildId) != undefined){
-            players.get(interaction.guildId).pause()
-            servers.delete(interaction.guildId)
-            players.delete(interaction.guildId)
-            interaction.reply("Music stoped")
-        } else{interaction.reply("Not music playing")}
+        Play.pause(interaction)
     }
 })
 
