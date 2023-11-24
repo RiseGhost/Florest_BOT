@@ -1,0 +1,7 @@
+sudo mkdir "$1"
+sudo mkdir -p "$1/proc"
+sudo mkdir -p "$1/bin"
+sudo mkdir -p "$1/lib"
+sudo mkdir -p "$1/lib64"
+sudo debootstrap buster "$1/"
+sudo chroot "$1/" /bin/bash -c "apt install python3 -y && apt install gcc -y"
