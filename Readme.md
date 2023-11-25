@@ -14,6 +14,9 @@ https://discord.com/api/oauth2/authorize?client_id=1167856337166811226&permissio
     - Capaz de fazer simples conversões de unidades, exemplo:
         - distância (km,...,m,...,mm)
         -  tempo (hora,minuto,segundo,mili segundo)
+- ## Execute Code:
+    - Tem a capacidade de executar código de lingugens como:
+        - C
 
 # About:
 
