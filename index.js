@@ -25,14 +25,13 @@ client.on('ready',async () => {
 })
 
 const Play = new PlayingMusic()
+const Slashs = new Map()
+Slashs.set("play",(i) => {Play.play(i)})
+Slashs.set("stop",(i) => {Play.pause(i)})
 
 client.on('interactionCreate', async interaction => {
     const { commandName } = interaction;
-    if (commandName === "play"){
-        Play.play(interaction)
-    } else if (commandName === "stop"){
-        Play.pause(interaction)
-    }
+    if (Slashs.has(commandName)) Slashs.get(commandName)(interaction)
 })
 
 client.on('messageCreate', function (message) {
@@ -48,8 +47,10 @@ client.on('messageCreate', function (message) {
         })
     }
 
-    //Pconverter.send(message.content)
-    //Pconverter.once('message',(data)=>{if (data != "") message.reply(data)})
+    //console.log(typeof (message.id.toString() + ".py") === 'string')
+
+    Pconverter.send(message.content)
+    Pconverter.once('message',(data)=>{if (data != "") message.reply(data)})
 
     Pcas.send(message)
     Pcas.once('message',(data)=>{if (data != "") message.reply(data)})
@@ -62,5 +63,3 @@ sudo systemctl start floarest-service.service
 */
 
 client.login(json['bot'].Token);
-
-//https://discord.com/api/oauth2/authorize?client_id=1167856337166811226&permissions=35190851241984&scope=bot
