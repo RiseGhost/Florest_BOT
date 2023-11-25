@@ -23,9 +23,6 @@ napi_value CloneCode(napi_env env,napi_callback_info info){
     napi_get_value_string_utf8(env,Dir,dir,Dir_len,NULL);
     napi_get_value_string_utf8(env,FileName,filename,FileName_len,NULL);
     napi_get_value_string_utf8(env,Data,data,Data_len,NULL);
-    std::cout << "dir      -> " << dir << "\n";
-    std::cout << "filename -> " << filename << "\n";
-    std::cout << "data     -> " << data << "\n";
     SaveINFile(dir,filename,data);
     return NULL;
 }

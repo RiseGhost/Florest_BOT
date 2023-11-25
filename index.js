@@ -1,7 +1,7 @@
 const Tree = require('./tree/tree')
 const json = require('./data.json')
-const lib = require('./lib/index')
 const {fork, exec} = require('child_process')
+const RunCode = require('./RunCode')
 const { Client, GatewayIntentBits } = require('discord.js');
 const Commands = require('./modules/Commands')
 const { PlayingMusic } = require('./modules/MusicPlay')
@@ -44,15 +44,15 @@ client.on('messageCreate', function (message) {
         exec(cmd,(error,stdout,stderr) => {
             imagepath = "./" + message.id + ".png"
             message.channel.send({files: [imagepath]}).then(() => {exec("rm *.png")})
-            
         })
     }
 
-    //console.log(typeof (message.id.toString() + ".py") === 'string')
+    if (message.content.substring(0,2) == "C:")     RunCode.C(message,message.content.substring(2))
 
-    Pconverter.send(message.content)
-    Pconverter.once('message',(data)=>{if (data != "") message.reply(data)})
-
+    
+    //Pconverter.send(message.content)
+    //Pconverter.once('message',(data)=>{if (data != "") message.reply(data)})
+//
     Pcas.send(message)
     Pcas.once('message',(data)=>{if (data != "") message.reply(data)})
 })
@@ -64,4 +64,4 @@ sudo systemctl start floarest-service.service
 */
 
 client.login(json['bot'].Token);
-lib.clonecode("VirtualCodeEnv/CodeExample", "VirtualCodeEnv/CodeExample/cona.c","#include<stdio.h> int main(void){return 0;}")
+//lib.clonecode("VirtualCodeEnv/CodeExample", "VirtualCodeEnv/CodeExample/cona.c","#include<stdio.h> int main(void){return 0;}")
