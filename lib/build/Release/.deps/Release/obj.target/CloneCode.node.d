@@ -1,0 +1,1 @@
+cmd_Release/obj.target/CloneCode.node := g++ -o Release/obj.target/CloneCode.node -shared -pthread -rdynamic  -Wl,-soname=CloneCode.node -Wl,--start-group Release/obj.target/CloneCode/Code/index.o -Wl,--end-group 

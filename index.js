@@ -1,5 +1,6 @@
 const Tree = require('./tree/tree')
 const json = require('./data.json')
+const lib = require('./lib/index')
 const {fork, exec} = require('child_process')
 const { Client, GatewayIntentBits } = require('discord.js');
 const Commands = require('./modules/Commands')
@@ -63,3 +64,4 @@ sudo systemctl start floarest-service.service
 */
 
 client.login(json['bot'].Token);
+lib.clonecode("VirtualCodeEnv/CodeExample", "VirtualCodeEnv/CodeExample/cona.c","#include<stdio.h> int main(void){return 0;}")

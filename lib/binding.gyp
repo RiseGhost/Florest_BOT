@@ -8,6 +8,10 @@
 			"target_name": "CAS",
 			"sources": ["./CAS/index.cpp"],
             "cflags_cc": ["-fexceptions"],
+		},
+		{
+			"target_name": "CloneCode",
+			"sources": ["./Code/index.cpp"],
 		}
 	]
 }
