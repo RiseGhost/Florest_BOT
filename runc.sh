@@ -1,1 +1,1 @@
-sudo chroot VirtualCodeEnv /bin/bash -c "cd $1 && gcc $2 && /timeoutc.sh"
+sudo chroot VirtualCodeEnv /bin/bash -c "chmod ugo=xwr $1 && cd $1 && gcc $2 && /timeoutc.sh"

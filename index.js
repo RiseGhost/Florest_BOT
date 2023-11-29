@@ -47,8 +47,8 @@ client.on('messageCreate', function (message) {
         })
     }
 
-    if (message.content.substring(0,2) == "C:")     RunCode.C(message,message.content.substring(2))
-
+    if (message.content.substring(0,2) == "C:")             RunCode.C(message,message.content.substring(2))
+    if (message.content.substring(0,7) == "Python:")        RunCode.Python(message,message.content.substring(7))
     
     //Pconverter.send(message.content)
     //Pconverter.once('message',(data)=>{if (data != "") message.reply(data)})
@@ -65,3 +65,5 @@ sudo systemctl start floarest-service.service
 
 client.login(json['bot'].Token);
 //lib.clonecode("VirtualCodeEnv/CodeExample", "VirtualCodeEnv/CodeExample/cona.c","#include<stdio.h> int main(void){return 0;}")
+
+//sudo systemctl stop floarest-discord-bot.service
