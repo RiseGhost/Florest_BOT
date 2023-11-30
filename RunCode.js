@@ -2,6 +2,7 @@ const lib = require('./lib/index')
 const { EmbedBuilder,Attachment } = require('discord.js')
 const {fork, exec} = require('child_process')
 const fs = require('fs')
+const ImagePath = '/home/theo-pi/Documents/Florest_BOT/images/'
 
 function Embed(color,Tittle,Author,Description,Fields,Image){
     const embed = new EmbedBuilder()
@@ -15,14 +16,14 @@ function Embed(color,Tittle,Author,Description,Fields,Image){
 }
 
 //Envia todos os ficheiros criados pelo código:
-//files -> os ficheiros default que já existem, por exemplo em C esse ficheiros são:
-// a.out -> ficheiro de execução
-// file.c -> ficheiro onde fica o código em C
-// output.out -> ficheiro onde está o stdout do código de C
-async function sendFiles(message,dir,files){
+// DefaultFiles -> os ficheiros default que já existem, por exemplo em C esse ficheiros são:
+// a.out        -> ficheiro de execução
+// file.c       -> ficheiro onde fica o código em C
+// output.out   -> ficheiro onde está o stdout do código de C
+async function sendFiles(message,dir,DefaultFiles){
     const FilesCreat = fs.readdirSync(dir)
     FilesCreat.forEach(file => {
-        if (!files.includes(file)){
+        if (!DefaultFiles.includes(file)){
             const command = "sudo chmod ugo=wr " + dir + "/" + file
             exec(command,(error,stdout,stderr)=>{
                 if (!error && !stderr) message.channel.send({files: [dir + "/" + file]})
@@ -31,48 +32,35 @@ async function sendFiles(message,dir,files){
     })
 }
 
-function C(message,code){
+function execute(message,code,CodeFile,language,shellscript,DefaultFiles){
     const dir = "VirtualCodeEnv/disc-" + message.id
-    const CodeFile = "file.c"
     lib.clonecode(dir,dir+"/"+CodeFile,code)
-    exec("./runc.sh " + "disc-" + message.id + " " + CodeFile, (error,stdout,stderr) => {
+    exec("./ShellScripts/" + shellscript + " disc-" + message.id + " " + CodeFile, (error,stdout,stderr) => {
         if (!error && !stderr) {
-            sendFiles(message,dir,['a.out',CodeFile,'output.out'])
+            sendFiles(message,dir,DefaultFiles)
             const data = fs.readFileSync(dir+"/output.out").toString()
             const embed = Embed(
                 0x99FF00,
                 "Code",
-                { name: 'FlorestBot 🤖', iconURL: 'https://i.imgur.com/AfFp7pu.png',url: 'https://discord.js.org'},
-                "```c" + code + "```",
+                { name: 'FlorestBot 🤖', iconURL: 'https://i.imgur.com/AfFp7pu.png',url: 'https://github.com/RiseGhost/Florest_BOT'},
+                "```" + language + code + "```",
                 {name:'output',value:data},
-                'attachment://c.png'
+                'attachment://' + language + '.png'
             )
-            if (data != '') message.channel.send({embeds:[embed],files:['/home/theo-pi/Documents/Florest_BOT/images/c.png']})
+            if (data != '') message.channel.send({embeds:[embed],files:[ImagePath + language + '.png']})
         } else message.reply(stderr)
         setTimeout(()=>{exec('sudo rm -r ' + dir)},10000)
     })
 }
 
+function C(message,code){
+    const CodeFile = "file.c"
+    execute(message,code,CodeFile,'c','runc.sh',['a.out',CodeFile,'output.out'])
+}
+
 function Python(message,code){
-    const dir = "VirtualCodeEnv/disc-" + message.id
     const CodeFile = "py.py"
-    lib.clonecode(dir,dir+"/"+CodeFile,code)
-    exec("./runpy.sh " + "disc-" + message.id + " " + CodeFile, (error,stdout,stderr) => {
-        if (!error && !stderr) {
-            sendFiles(message,dir,[,CodeFile,'output.out'])
-            const data = fs.readFileSync(dir+"/output.out").toString()
-            const embed = Embed(
-                0x99FF00,
-                "Code",
-                { name: 'FlorestBot 🤖', iconURL: 'https://i.imgur.com/AfFp7pu.png',url: 'https://discord.js.org'},
-                "```python" + code + "```",
-                {name:'output',value:data},
-                'attachment://python.png'
-            )
-            if (data != '') message.channel.send({embeds:[embed],files:['/home/theo-pi/Documents/Florest_BOT/images/python.png']})
-        } else message.reply(stderr)
-        setTimeout(()=>{exec('sudo rm -r ' + dir)},10000)
-    })
+    execute(message,code,CodeFile,'python','runpy.sh',[CodeFile,'output.out'])
 }
 
 module.exports = {C,Python}

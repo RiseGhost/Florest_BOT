@@ -52,7 +52,6 @@ client.on('messageCreate', function (message) {
     
     //Pconverter.send(message.content)
     //Pconverter.once('message',(data)=>{if (data != "") message.reply(data)})
-//
     Pcas.send(message)
     Pcas.once('message',(data)=>{if (data != "") message.reply(data)})
 })
@@ -64,6 +63,4 @@ sudo systemctl start floarest-service.service
 */
 
 client.login(json['bot'].Token);
-//lib.clonecode("VirtualCodeEnv/CodeExample", "VirtualCodeEnv/CodeExample/cona.c","#include<stdio.h> int main(void){return 0;}")
-
 //sudo systemctl stop floarest-discord-bot.service
