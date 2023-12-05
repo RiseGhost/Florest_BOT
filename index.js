@@ -1,7 +1,6 @@
 const Tree = require('./tree/tree')
 const json = require('./data.json')
 const {fork, exec} = require('child_process')
-const RunCode = require('./RunCode')
 const { Client, GatewayIntentBits } = require('discord.js');
 const Commands = require('./modules/Commands')
 const { PlayingMusic } = require('./modules/MusicPlay')
@@ -16,6 +15,7 @@ const client = new Client(
     });
 
 const Pcas = fork('./lib/cas.js')
+const ProcessCode = fork('./DetectCode.js')
 const Pconverter = fork('./lib/convert.js')
 
 client.on('ready',async () => {
@@ -46,12 +46,12 @@ client.on('messageCreate', function (message) {
             message.channel.send({files: [imagepath]}).then(() => {exec("rm *.png")})
         })
     }
-
-    if (message.content.substring(0,2) == "C:")             RunCode.C(message,message.content.substring(2))
-    if (message.content.substring(0,7) == "Python:")        RunCode.Python(message,message.content.substring(7))
-    
     //Pconverter.send(message.content)
     //Pconverter.once('message',(data)=>{if (data != "") message.reply(data)})
+
+    ProcessCode.send(message)
+    ProcessCode.once('message',(stdout)=>{if (stdout)(message.channel.send(stdout))})
+
     Pcas.send(message)
     Pcas.once('message',(data)=>{if (data != "") message.reply(data)})
 })
