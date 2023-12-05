@@ -4,6 +4,20 @@ const { exec } = require('child_process')
 const fs = require('fs')
 const ImagePath = '/home/theo-pi/Documents/Florest_BOT/images/'
 
+/*
+Responsável por fazer a execução do código em si.
+Utiliza de ficheiros .sh juntamente com processos para criar e executar os ficheiros de código.
+Todos os ficheiro de código são executados nu chroot em um root diferente.
+Os ficheiro responsável por entrar no chroot, e copilar os ficheiros de código estão no pasta ShellSripts
+As diretoria são criadas utilizando código em C que esta na diretoria lib/Code
+-> Inicialmente criação da diretori no foramato disc-message.id;
+-> Criação do ficheiros de código;
+-> Entrar no chroot;
+-> Escrever o stdout do código para um ficheiro out.out;
+-> Ler o ficheiro out.out de devolver no chat do discord;
+-> Caso haja ficheiros criados pelo código fornecido, esse ficheiro também são enviados.
+*/
+
 function Embed(color,Tittle,Author,Description,Fields,Image){
     const embed = new EmbedBuilder()
     .setColor(color)
