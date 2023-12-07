@@ -29,21 +29,19 @@ function Embed(color,Tittle,Author,Description,Fields,Image){
     return embed
 }
 
-//Envia todos os ficheiros criados pelo código:
+// Obtem todos os ficheiros criados pelo código:
 // DefaultFiles -> os ficheiros default que já existem, por exemplo em C esse ficheiros são:
 // a.out        -> ficheiro de execução
 // file.c       -> ficheiro onde fica o código em C
 // output.out   -> ficheiro onde está o stdout do código de C
-async function sendFiles(message,dir,DefaultFiles){
+function getFiles(message,dir,DefaultFiles){
     const FilesCreat = fs.readdirSync(dir)
+    var files = []
     FilesCreat.forEach(file => {
-        if (!DefaultFiles.includes(file)){
-            const command = "sudo chmod ugo=wr " + dir + "/" + file
-            exec(command,(error,stdout,stderr)=>{
-                if (!error && !stderr) message.channel.send({files: [dir + "/" + file]})
-            })
-        }
+        if (!DefaultFiles.includes(file))
+            files.push(dir+"/"+file)
     })
+    return files
 }
 
 function execute(message,code,CodeFile,language,shellscript,DefaultFiles){
@@ -52,8 +50,12 @@ function execute(message,code,CodeFile,language,shellscript,DefaultFiles){
     return new Promise((resolve,reject) => {
         exec("./ShellScripts/" + shellscript + " disc-" + message.id + " " + CodeFile, (error,stdout,stderr) => {
             if (!error && !stderr) {
-                sendFiles(message,dir,DefaultFiles)
-                const data = fs.readFileSync(dir+"/output.out").toString()
+                var Files = getFiles(message,dir,DefaultFiles)
+                Files.push(ImagePath + language + '.png')
+                const stdout = fs.readFileSync(dir+"/output.out").toString()
+                var data = ''
+                if (stdout == '') {data = 'null'}
+                else {data = stdout}
                 const embed = Embed(
                     0x99FF00,
                     "Code",
@@ -62,8 +64,7 @@ function execute(message,code,CodeFile,language,shellscript,DefaultFiles){
                     {name:'output',value:data},
                     'attachment://' + language + '.png'
                 )
-                if (data != '') resolve({embeds:[embed],files:[ImagePath + language + '.png']})
-                else resolve('')
+                resolve({embeds:[embed],files:Files})
             } else resolve(stderr)
             setTimeout(()=>{exec('sudo rm -r ' + dir)},10000)
         })
