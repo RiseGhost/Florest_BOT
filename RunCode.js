@@ -3,6 +3,7 @@ const { EmbedBuilder,Attachment } = require('discord.js')
 const { exec } = require('child_process')
 const fs = require('fs')
 const ImagePath = '/home/theo-pi/Documents/Florest_BOT/images/'
+const color = 0x99FF00
 
 /*
 Responsável por fazer a execução do código em si.
@@ -18,11 +19,11 @@ As diretoria são criadas utilizando código em C que esta na diretoria lib/Code
 -> Caso haja ficheiros criados pelo código fornecido, esse ficheiro também são enviados.
 */
 
-function Embed(color,Tittle,Author,Description,Fields,Image){
+function Embed(Description,Fields,Image){
     const embed = new EmbedBuilder()
     .setColor(color)
-    .setTitle(Tittle)
-    .setAuthor(Author)
+    .setTitle("Code")
+    .setAuthor({ name: 'FlorestBot 🤖', iconURL: 'https://i.imgur.com/AfFp7pu.png',url: 'https://github.com/RiseGhost/Florest_BOT'})
     .setDescription(Description)
     .addFields(Fields)
     .setThumbnail(Image)
@@ -57,11 +58,8 @@ function execute(message,code,CodeFile,language,shellscript,DefaultFiles){
                 if (stdout == '') {data = 'null'}
                 else {data = stdout}
                 const embed = Embed(
-                    0x99FF00,
-                    "Code",
-                    { name: 'FlorestBot 🤖', iconURL: 'https://i.imgur.com/AfFp7pu.png',url: 'https://github.com/RiseGhost/Florest_BOT'},
                     "```" + language + "\n" + code + "```",
-                    {name:'output',value:data},
+                    ({name:'output',value:data}),
                     'attachment://' + language + '.png'
                 )
                 resolve({embeds:[embed],files:Files})
