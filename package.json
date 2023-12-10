@@ -13,7 +13,6 @@
     "@discordjs/voice": "^0.16.1",
     "discord.js": "^14.14.1",
     "libsodium-wrappers": "^0.7.13",
-    "node-serialize": "^0.0.4",
     "program-language-detector": "^0.0.12",
     "ytdl-core": "^4.11.5",
     "ytdl-core-discord": "^1.3.1"
