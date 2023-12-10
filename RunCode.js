@@ -79,4 +79,9 @@ async function Python(message,code){
     return execute(message,code,CodeFile,'python','runpy.sh',[CodeFile,'output.out'])
 }
 
-module.exports = {C,Python}
+async function JavaScript(message,code){
+    const CodeFile = "node.js"
+    return execute(message,code,CodeFile,'javascript','runjs.sh',[CodeFile,'output.out'])
+}
+
+module.exports = {C,Python,JavaScript}

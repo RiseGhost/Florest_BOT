@@ -1,0 +1,1 @@
+sudo chroot VirtualCodeEnv /bin/bash -c "chmod ugo=xwr $1 && cd $1 && /timeoutjs.sh $2"

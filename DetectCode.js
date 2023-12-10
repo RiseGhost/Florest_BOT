@@ -12,6 +12,7 @@ const LanguagesSuport = new Map()
 LanguagesSuport.set("C++",(message,code) => {return RunCode.C(message,code)})
 LanguagesSuport.set("C",(message,code) => {return RunCode.C(message,code)})
 LanguagesSuport.set("Python",(message,code) => {return RunCode.Python(message,code)})
+LanguagesSuport.set("JavaScript",(message,code) => {return RunCode.JavaScript(message,code)})
 
 async function Code(message){
     const language = detect(message.content)
